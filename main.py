@@ -18,9 +18,9 @@ def main():
         satellite_dir = save_satellite_data(parent_directory, sanitized_name, satellite_data)
         
         # Save satellite images if available
-        img_urls = satellite_data.get('Image URLs', [])
+        img_urls = satellite_data.get('Image Data', [])
         if img_urls:
-            save_satellite_images(img_urls, satellite_dir, sanitized_name)
+            save_satellite_images(img_urls, satellite_dir)
     
 if __name__ == "__main__":
     main()
