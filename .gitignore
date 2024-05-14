@@ -3,6 +3,7 @@ __pycache__/
 pycache/*
 *.py[cod]
 
+Satellites_Data
 # C extensions
 *.so
 
