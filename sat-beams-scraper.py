@@ -5,10 +5,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import os
+import requests
 from bs4 import BeautifulSoup
 
 website = "https://www.satbeams.com/satellites?status=active"
 t_body_xpath = '//*[@id="sat_grid"]/tbody/tr[@class="class_tr"]'
+parent_directory = "sat_beams_satellites"
 
 def extract_text(soup, label):
     """Extract text following the given label."""
@@ -30,7 +32,20 @@ def extract_anchor_text(soup, label):
         print(f"Error extracting anchor text for label '{label}': {e}")
     return "N/A"
 
+def download_image(img_url, save_path):
+    """Download image from img_url and save it to save_path."""
+    try:
+        response = requests.get(img_url, stream=True)
+        response.raise_for_status()
+        with open(save_path, 'wb') as out_file:
+            for chunk in response.iter_content(chunk_size=8192):
+                out_file.write(chunk)
+        print(f"Image downloaded and saved to {save_path}")
+    except Exception as e:
+        print(f"Error downloading image from {img_url}: {e}")
+
 try:
+
     driver = webdriver.Chrome()
     driver.get(website)
     driver.implicitly_wait(5)
@@ -57,6 +72,10 @@ try:
 
     print(f"Number of unique hrefs: {len(unique_hrefs)}")
     
+    # Ensure the parent directory exists
+    if not os.path.exists(parent_directory):
+        os.makedirs(parent_directory)
+
     # Visit each href
     for href in unique_hrefs:
         try:
@@ -84,6 +103,7 @@ try:
             # Extract relevant data using the extract_text and extract_anchor_text functions
             satellite_data['Satellite Name'] = extract_text(soup, "Satellite Name:")
             satellite_name = satellite_data['Satellite Name']
+
             if not satellite_name or satellite_name == "N/A":
                 print(f"Invalid satellite name for {href}, skipping...")
                 continue
@@ -109,16 +129,29 @@ try:
                 print(f"Sanitized satellite name is empty for {href}, skipping...")
                 continue
             
-            # Ensure the output directory exists
-            if not os.path.exists(sanitized_name):
-                os.makedirs(sanitized_name)
+            #Create satellite dir
+
+            satellite_dir = os.path.join(parent_directory, sanitized_name)
+            if not os.path.exists(satellite_dir):
+                os.makedirs(satellite_dir)
                 
-            file_path = os.path.join(sanitized_name, f"{sanitized_name}.txt")
+            file_path = os.path.join(satellite_dir, f"{sanitized_name}.txt")
             with open(file_path, 'w') as file:
                 for key, value in satellite_data.items():
                     file.write(f'{key}: {value}\n')
             
             print(f"Created file: {file_path}")
+
+            # Check for the image and download it if it exists
+            try:
+                img_tag = driver.find_element(By.XPATH, './/img[contains(@src, "/images/footprints/")]')
+                img_url = img_tag.get_attribute('src')
+                if img_url:
+                    img_name = os.path.basename(img_url)
+                    img_path = os.path.join(sanitized_name, f"{sanitized_name}.png")
+                    download_image(img_url, img_path)
+            except Exception as e:
+                            print(f"No image found for {href}, skipping image download: {e}")
 
             # Go back to the initial page
             driver.back()
