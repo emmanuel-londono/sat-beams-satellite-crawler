@@ -1,0 +1,15 @@
+Satellite Name: Intelsat 18 (IS-18)
+Status: active
+Position: 180° E (180° E)
+NORAD: 37834
+Cospar number: 2011-056A
+Operator: Intelsat
+Launch date: 6-Oct-2011
+Launch site: Baikonur Cosmodrome
+Launch vehicle: Zenit 3SL
+Launch mass (kg): 3200
+Dry mass (kg): 1464
+Manufacturer: Northrop Grumman
+Model (bus): GEOStar-2
+Orbit: GEO
+Expected lifetime: 15+ yrs.

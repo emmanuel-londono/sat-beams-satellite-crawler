@@ -1,0 +1,15 @@
+Satellite Name: Intelsat 30 (ISDLA-1, DLA 1)
+Status: active
+Position: 95° W (95.1° W)
+NORAD: 40271
+Cospar number: 2014-062B
+Operator: Intelsat
+Launch date: 16-Oct-2014
+Launch site: Guiana Space Center
+Launch vehicle: Ariane 5 ECA
+Launch mass (kg): 6300
+Dry mass (kg): 3412
+Manufacturer: Maxar Technologies (SSL/MDA)
+Model (bus): LS-1300
+Orbit: GEO
+Expected lifetime: 15 yrs.

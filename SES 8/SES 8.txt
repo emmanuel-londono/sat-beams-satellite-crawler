@@ -1,0 +1,15 @@
+Satellite Name: SES 8
+Status: active
+Position: 95° E (95° E)
+NORAD: 39460
+Cospar number: 2013-071A
+Operator: SES S.A.
+Launch date: 3-Dec-2013
+Launch site: Cape Canaveral SFS
+Launch vehicle: Falcon 9 v1.1
+Launch mass (kg): 3138
+Dry mass (kg): 
+Manufacturer: Northrop Grumman
+Model (bus): GEOStar-2
+Orbit: GEO
+Expected lifetime: 15 yrs.
