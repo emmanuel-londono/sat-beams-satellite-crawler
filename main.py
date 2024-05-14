@@ -1,5 +1,5 @@
 from scraper import scrape_satellite_data
-from file_handler import create_parent_directory, save_satellite_data, save_satellite_image
+from file_handler import create_parent_directory, save_satellite_data, save_satellite_images
 
 def main():
     website = "https://www.satbeams.com/satellites?status=active"
@@ -17,10 +17,10 @@ def main():
         sanitized_name = "".join(c if c.isalnum() or c in " ._-" else "_" for c in satellite_name)
         satellite_dir = save_satellite_data(parent_directory, sanitized_name, satellite_data)
         
-        # Save satellite image if available
-        img_url = satellite_data.get('Image URL')
-        if img_url:
-            save_satellite_image(img_url, satellite_dir, sanitized_name)
+        # Save satellite images if available
+        img_urls = satellite_data.get('Image URLs', [])
+        if img_urls:
+            save_satellite_images(img_urls, satellite_dir, sanitized_name)
     
 if __name__ == "__main__":
     main()

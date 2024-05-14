@@ -13,11 +13,16 @@ def save_satellite_data(parent_directory, satellite_name, satellite_data):
     file_path = os.path.join(satellite_dir, f"{satellite_name}.txt")
     with open(file_path, 'w') as file:
         for key, value in satellite_data.items():
-            file.write(f'{key}: {value}\n')
+            if key != 'Images':  # Exclude images from the text file
+                file.write(f'{key}: {value}\n')
     
     print(f"Created file: {file_path}")
     return satellite_dir
 
-def save_satellite_image(img_url, satellite_dir, satellite_name):
-    img_path = os.path.join(satellite_dir, f"{satellite_name}.png")
-    download_image(img_url, img_path)
+def save_satellite_images(image_info, satellite_dir):
+    for img in image_info:
+        title = img['title']
+        img_url = img['url']
+        sanitized_title = "".join(c if c.isalnum() or c in " ._-" else "_" for c in title)
+        img_path = os.path.join(satellite_dir, f"{sanitized_title}.png")
+        download_image(img_url, img_path)

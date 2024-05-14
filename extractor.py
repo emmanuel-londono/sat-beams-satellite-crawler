@@ -18,6 +18,23 @@ def extract_anchor_text(soup, label):
         print(f"Error extracting anchor text for label '{label}': {e}")
     return "N/A"
 
+def extract_image_info(soup):
+    image_info = []
+    base_url = "https://www.satbeams.com"
+
+    slider_div = soup.select_one('#sliderDiv')
+    if slider_div:
+        img_containers = slider_div.select('div > div > div > div:nth-child(3) > a')
+        for container in img_containers:
+            title_tag = container.select_one('h2')
+            img_tag = container.find_previous('img')
+            if title_tag and img_tag:
+                title = title_tag.get_text(strip=True)
+                img_url = base_url + img_tag['src']
+                image_info.append({'title': title, 'url': img_url})
+    
+    return image_info
+
 def extract_satellite_info(page_source):
     soup = BeautifulSoup(page_source, 'html.parser')
     satellite_data = {}
@@ -38,8 +55,8 @@ def extract_satellite_info(page_source):
     satellite_data['Orbit'] = extract_text(soup, "Orbit:")
     satellite_data['Expected lifetime'] = extract_text(soup, "Expected lifetime:")
 
-    img_tag = soup.find('img', {'src': lambda x: x and '/images/footprints/' in x})
-    if img_tag:
-        satellite_data['Image URL'] = img_tag['src']
+    satellite_data['Images'] = extract_image_info(soup)
+    
+    print(f"Extracted data for satellite: {satellite_data.get('Satellite Name', 'Unknown')}")
     
     return satellite_data
