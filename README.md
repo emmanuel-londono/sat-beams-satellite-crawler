@@ -11,3 +11,9 @@
 ```pip install bs4```
 
 ```pip install selenium```
+
+## To execute:
+Navigate to repo then run:
+```python main.py```
+
+A folder (Satellite_Data) should appear after 5 minutes with the scrapped data.
