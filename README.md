@@ -16,4 +16,4 @@
 Navigate to repo then run:
 ```python main.py```
 
-A folder (Satellite_Data) should appear after 5 minutes with the scrapped data.
+A folder (Satellite_Data) should appear after 5 minutes with the scrapped data within.
